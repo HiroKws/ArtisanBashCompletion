@@ -26,9 +26,16 @@ _artisan_module()
 
     # For command options. If not want it, delete 'if' block.
     # コマンドのオプション。必要ない場合は、if〜fiブロック間を削除する
-    if [ $COMP_CWORD -ge 2 ]
+    if [ "${COMP_WORDS[2]}" = ":" ] && [ $COMP_CWORD -ge 4 ] ||
+        [ "${COMP_WORDS[2]}" != ":" ] && [ $COMP_CWORD -ge 3 ]
     then
-        artisan_options=$(php artisan "${COMP_WORDS[1]}" --no-ansi --help | awk -e '/^ --/ { print $1 } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
+        if [ "${COMP_WORDS[2]}" = ":" ]
+        then
+            comm="${COMP_WORDS[1]}:${COMP_WORDS[3]}"
+        else
+            comm="${COMP_WORDS[1]}"
+        fi
+        artisan_options=$(php artisan "${comm}" --no-ansi --help | awk -e '/^ --/ { print $1 } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
     fi
 
     COMPREPLY=($(compgen -W "${artisan_options}" -- "${cur}"))

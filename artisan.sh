@@ -27,7 +27,7 @@ _artisan_module()
     # For command options. If not want it, delete 'if' block.
     # コマンドのオプション。必要ない場合は、if〜fiブロック間を削除する
     if [ "${COMP_WORDS[2]}" = ":" ] && [ $COMP_CWORD -ge 4 ] ||
-        [ "${COMP_WORDS[2]}" != ":" ] && [ $COMP_CWORD -ge 3 ]
+        [ "${COMP_WORDS[2]}" != ":" ] && [ $COMP_CWORD -ge 2 ]
     then
         if [ "${COMP_WORDS[2]}" = ":" ]
         then

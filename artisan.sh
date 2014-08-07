@@ -12,7 +12,7 @@ _artisan_module()
         return 0;
     fi
 
-    local cur prev artisan_options token
+    local cur prev artisan_options token env
 
     # Ignore ':' and '-' from $COMP_WORDBREAKS then take last entered string.
     # 単語区切りの文字から':'と'-'を除外し、最後の入力文字列を取得する
@@ -44,10 +44,16 @@ _artisan_module()
         fi
 
         case "${token}" in
-            # Please change completions for "--env=" option freely.
-            # "-env="に対する候補、お好きなものに変更してください
+            # You can set your environment tokens on $LARAVEL_ENVIRONMENT_WORDS.
+            # "--env="に対する候補、$LARAVEL_ENVIRONMENT_WORDS変数に自分の環境名を設定できます。
             --env )
-                COMPREPLY=($(compgen -W "local production testing" -- "${cur}"))
+                if [ -n "${LARAVEL_ENVIRONMENT_WORDS}" ]
+                then
+                    env="${LARAVEL_ENVIRONMENT_WORDS}"
+                else
+                    env="local production testing"
+                fi
+                COMPREPLY=($(compgen -W "${env}" -- "${cur}"))
                 return 0
                 ;;
             # Complete files list for "--*path" option names.
@@ -83,7 +89,7 @@ _artisan_module()
         else
             comm="${COMP_WORDS[1]}"
         fi
-        artisan_options=$(php artisan "${comm}" --no-ansi --help | awk -e '/^Usage:$/ { usage=1; next; } usage==1 { usage=0; o=0; for (i=1;NF>=i;i++) { if ($i ~ /[\[\|]--\w+\[?=/) { wd=gensub(/^\[(.+\|)?--(\w+)\[?=.*$/, "\\2", 1, $i); witheq[++o]="--" wd; print "--" wd "="  } } } /^ --/ { if ($1=="--env") { print "--env=" } else { mch=0; for (i=1;o>=i;i++) { if (witheq[i]==$1) { mch=1 } } if (mch==0) { print $1 } } } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
+        artisan_options=$(php artisan "${comm}" --no-ansi --help | awk -e '/^Usage:$/ { usage=1; next; } usage==1 { usage=0; o=0; for (i=1;NF>=i;i++) { if ($i ~ /[\[\|]--\w+\[?=/) { wd=gensub(/^\[(.+\|)?--(\w+)\[?=.*$/, "\\2", 1, $i); witheq[++o]="--" wd; print "--" wd "=" } } } /^ --/ { if ($1=="--env") { print "--env=" } else { mch=0; for (i=1;o>=i;i++) { if (witheq[i]==$1) { mch=1 } } if (mch==0) { print $1 } } } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
         # Without tailing space when completed.
         # 保管後に挿入される空白を入れないようにする
         compopt -o nospace

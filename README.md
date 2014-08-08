@@ -214,6 +214,39 @@ $ artisan dummy-command-name ../<tab><tab>
 $ artisan dummy-command-name ~/<tab><tab>
 ~~~
 
+**Memo : ** Normally, you can use a readline key-map to filename completion. So you can also use it. To find it, just try it.
+
+**メモ：** 通常、ファイル名の補完はreadlineのキーマップで定義されています。どのキーコンビネーションに指定されているかは、次のコマンドを実行すれば、見つけられます。
+
+~~~
+bind -p | grep complete-filename
+~~~
+
+If your key-bind is "\e/"(hit \<Esc\> key, then '/'), so use like following:
+
+例えば、"\e/"（\<Esc\>キーの後に'/'）に割りつけられていれば、以下のように使用します。
+
+~~~
+$ <esc>/<esc>/
+
+app/            bootstrap/      composer.lock   public/         vendor/
+artisan         composer.json   phpunit.xml     server.php
+
+$ com<esc>/
+
+$ composer.<esc>/<esc>/
+
+composer.json  composer.lock
+
+$ composer.j<esc>/
+
+$ composer.json
+~~~
+
+So, you can complete filename freely, anytime, anywhere.
+
+ですから、いつでも、どこでも、自由にファイル名の補完が利用できます。
+
 #### Limitaion（制限）
 
 This completion works in a directory with artisan php file. It means in your Laravel project root directory only. So it don't work like this : 'php /home/MyUsername/MyProject/artisan'

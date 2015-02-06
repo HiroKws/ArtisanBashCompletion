@@ -1,7 +1,7 @@
 # Laravel Artisan commands completion with bash.
 # Bash用のArtisanコマンド補完
 
-# Copyright holding by Hirohisa Kawase at 2014.
+# Copyright holding by Hirohisa Kawase at 2015
 # Released on MIT license.
 
 _artisan_module()
@@ -96,7 +96,7 @@ _artisan_module()
     else
         # Complete Artisan command names.
         # Artisanコマンド名の補完
-        artisan_options=$(php artisan --no-ansi | awk '/^  [\-a-z]+/ { if ($1=="--env") print "--env="; else print $1 }; $2 ~/^-/ { gsub(/\|/, " -", $2); print $2 }')
+        artisan_options=$(php artisan --no-ansi | awk '/^[[:blank:]]+[\-a-z]+/ { if ($1=="--env") print "--env="; else print $1 }; $2 ~/^-/ { gsub(/\|/, " -", $2); print $2 }')
     fi
 
     COMPREPLY=($(compgen -W "${artisan_options}" -- "${cur}"))

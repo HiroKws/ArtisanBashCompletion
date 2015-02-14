@@ -90,6 +90,14 @@ _artisan_module()
             comm="${COMP_WORDS[1]}"
         fi
         artisan_options=$(php artisan "${comm}" --no-ansi --help | awk -e '/^Usage:$/ { usage=1; next; } usage==1 { usage=0; o=0; for (i=1;NF>=i;i++) { if ($i ~ /[\[\|]--\w+\[?=/) { wd=gensub(/^\[(.+\|)?--(\w+)\[?=.*$/, "\\2", 1, $i); witheq[++o]="--" wd; print "--" wd "=" } } } /^ --/ { if ($1=="--env") { print "--env=" } else { mch=0; for (i=1;o>=i;i++) { if (witheq[i]==$1) { mch=1 } } if (mch==0) { print $1 } } } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
+        # For forbidden display options. You can set them into LARAVEL_NO_DISPLAY_OPTIONS environment variable.
+        # ex) LARAVEL_NO_DISPLAY_OPTIONS="-v -vv -vvv --ansi"
+        # LARAVEL_NO_DISPLAY_OPTIONSで指定されたオプションを表示しない。
+        # 例： LARAVEL_NO_DISPLAY_OPTIONS="-v -vv -vvv --ansi"
+        if [ -n "${LARAVEL_NO_DISPLAY_OPTIONS}" ]
+        then
+            artisan_options=$(echo "${artisan_options}" | tr ' ' "\n" | awk -v no_disp="${LARAVEL_NO_DISPLAY_OPTIONS}" -e 'BEGIN { n=split( no_disp, temp); for(i=1; i<=n; i++){forbidden[temp[i]]=1;}} ! forbidden[$0]++ {print $0}')
+        fi
         # Without tailing space when completed.
         # 保管後に挿入される空白を入れないようにする
         compopt -o nospace

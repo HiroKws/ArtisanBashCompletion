@@ -124,6 +124,19 @@ $ artisan migrate:install --no-a<tab>
 $ artisan migrate:install --no-ansi
 ~~~
 
+If you think too mach options displaying, so you can forbid some options you specified.
+
+もし、コマンドのオプションが多すぎると思うのであれば、選択したオプションを表示しないようにできます。
+
+Set LARAVEL_NO_DISPLAY_OPTIONS environment variable.
+
+LARAVEL_NO_DISPLAY_OPTIONS環境変数を設定してください。
+
+~~~
+# Normally, define in .bashrc/.bash_profile（通常、Bash設定ファイルの中で宣言)
+export LARAVEL_NO_DISPLAY_OPTIONS="--ansi --no-ansi --version -v -vv -vvv"
+~~~
+
 For some long options, this will take more special completion.
 
 いくつかのロングオプション形式には、特別な補完を行います。
@@ -143,9 +156,6 @@ As above list showed, default values are "local production testing". If you want
 上記のリストの通り、デフォルトでは"local production testing"が補完対象です。自分の環境名を設定したい場合は、"$LARAVEL_ENVIRONMENT_WORDS"を指定してください。
 
 ~~~
-# temporary（一時的）
-LARAVEL_ENVIRONMENT_WORDS="development staging onservice"
-
 # Normally, define in .bashrc/.bash_profile（通常、Bash設定ファイルの中で宣言)
 export LARAVEL_ENVIRONMENT_WORDS="development staging onservice"
 ~~~

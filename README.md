@@ -10,7 +10,7 @@ Bash用のLaravel Artisanコマンドラインツールの補完スクリプト�
 First of all, define alias for artisan command in your .bashrc, like this :
 
 ~~~
-alian='php artisan --ansi'
+alias='php artisan --ansi'
 ~~~
 
 Next, if you didn't install "bash-completion" package, so please install it.
@@ -28,7 +28,7 @@ complete -F _artisan_module Your-Alias-Name-Here
 先ず、最初に別名を定義してください。通常、.bashrcか.bash_profileの中で定義します。
 
 ~~~
-alian='php artisan --ansi'
+alias='php artisan --ansi'
 ~~~
 
 もし、多くのlinuxコマンドの補完を行う、"bash-completion"をまだインストールしていないければ、先にインストールしてください。

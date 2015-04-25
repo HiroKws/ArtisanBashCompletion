@@ -4,9 +4,28 @@
 # Copyright holding by Hirohisa Kawase at 2015
 # Released on MIT license.
 
+_get_artisan_dir()
+{
+    wd=$(pwd)
+
+    until [ -f "${wd}/artisan" ]
+    do
+        wd=${wd%/*}
+        if [ -z $wd ]
+        then
+            break
+        fi
+    done
+
+    echo $wd
+}
+
 _artisan_module()
 {
-    if [ ! -f artisan ]
+    artisan=$(_get_artisan_dir)
+    artisan="${artisan}/artisan"
+    
+    if [ ! -f $artisan ]
     then
         COMPREPLY=()
         return 0;
@@ -89,7 +108,7 @@ _artisan_module()
         else
             comm="${COMP_WORDS[1]}"
         fi
-        artisan_options=$(php artisan "${comm}" --no-ansi --help | awk -e '/^Usage:$/ { usage=1; next; } usage==1 { usage=0; o=0; for (i=1;NF>=i;i++) { if ($i ~ /[\[\|]--\w+\[?=/) { wd=gensub(/^\[(.+\|)?--(\w+)\[?=.*$/, "\\2", 1, $i); witheq[++o]="--" wd; print "--" wd "=" } } } /^ --/ { if ($1=="--env") { print "--env=" } else { mch=0; for (i=1;o>=i;i++) { if (witheq[i]==$1) { mch=1 } } if (mch==0) { print $1 } } } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
+        artisan_options=$(php $artisan "${comm}" --no-ansi --help | awk -e '/^Usage:$/ { usage=1; next; } usage==1 { usage=0; o=0; for (i=1;NF>=i;i++) { if ($i ~ /[\[\|]--\w+\[?=/) { wd=gensub(/^\[(.+\|)?--(\w+)\[?=.*$/, "\\2", 1, $i); witheq[++o]="--" wd; print "--" wd "="  } } } /^ --/ { if ($1=="--env") { print "--env=" } else { mch=0; for (i=1;o>=i;i++) { if (witheq[i]==$1) { mch=1 } } if (mch==0) { print $1 } } } $2 ~/^\(/ { gsub(/[\(\)]/, "", $2); gsub(/\|/, " -", $2); print $2}')
         # For forbidden display options. You can set them into LARAVEL_NO_DISPLAY_OPTIONS environment variable.
         # ex) LARAVEL_NO_DISPLAY_OPTIONS="-v -vv -vvv --ansi"
         # LARAVEL_NO_DISPLAY_OPTIONSで指定されたオプションを表示しない。
@@ -99,12 +118,12 @@ _artisan_module()
             artisan_options=$(echo "${artisan_options}" | tr ' ' "\n" | awk -v no_disp="${LARAVEL_NO_DISPLAY_OPTIONS}" -e 'BEGIN { n=split( no_disp, temp); for(i=1; i<=n; i++){forbidden[temp[i]]=1;}} ! forbidden[$0]++ {print $0}')
         fi
         # Without tailing space when completed.
-        # 保管後に挿入される空白を入れないようにする
+        # 補完後に挿入される空白を入れないようにする
         compopt -o nospace
     else
         # Complete Artisan command names.
         # Artisanコマンド名の補完
-        artisan_options=$(php artisan --no-ansi | awk '/^[[:blank:]]+[\-a-z]+/ { if ($1=="--env") print "--env="; else print $1 }; $2 ~/^-/ { gsub(/\|/, " -", $2); print $2 }')
+        artisan_options=$(php $artisan --no-ansi | awk '/^[[:blank:]]+[\-a-z]+/ { if ($1=="--env") print "--env="; else print $1 }; $2 ~/^-/ { gsub(/\|/, " -", $2); print $2 }')
     fi
 
     COMPREPLY=($(compgen -W "${artisan_options}" -- "${cur}"))

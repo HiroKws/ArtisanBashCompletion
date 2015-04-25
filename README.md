@@ -1,16 +1,17 @@
 Artisan-Bash completion
 =======================
 
-Bash completion code for Laravel Artisan command line tool to complete code.
+Bash completion code for Laravel Artisan command line tool to complete code. And also, you can use Artisan command any folders under a Laravel project.
 
-Bash用のLaravel Artisanコマンドラインツールの補完スクリプトです。
+Bash用のLaravel Artisanコマンドラインツールの補完スクリプトです。追加機能として、Laravelプロジェクトディレクトリー下のどのディレクトリー中でも、
+Artisanコマンドを実行できるようにします。
 
 #### Install（インストール）
 
 First of all, define alias for artisan command in your .bashrc, like this :
 
 ~~~
-alias='php artisan --ansi'
+alias artisan='php "$(_get_artisan_dir)/artisan" --ansi'
 ~~~
 
 Next, if you didn't install "bash-completion" package, so please install it.
@@ -28,7 +29,7 @@ complete -F _artisan_module Your-Alias-Name-Here
 先ず、最初に別名を定義してください。通常、.bashrcか.bash_profileの中で定義します。
 
 ~~~
-alias='php artisan --ansi'
+alias artisan='php "$(_get_artisan_dir)/artisan" --ansi'
 ~~~
 
 もし、多くのlinuxコマンドの補完を行う、"bash-completion"をまだインストールしていないければ、先にインストールしてください。

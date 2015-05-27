@@ -138,6 +138,9 @@ $ artisan migrate:install --no-a<tab>
 $ artisan migrate:install --no-ansi
 ~~~
 
+#### Inhibition of complitions
+#### 補完候補の抑制
+
 If you think too mach options displaying, so you can forbid some options you specified.
 
 もし、コマンドのオプションが多すぎると思うのであれば、選択したオプションを表示しないようにできます。
@@ -150,6 +153,9 @@ LARAVEL_NO_DISPLAY_OPTIONS環境変数を設定してください。
 # Normally, define in .bashrc/.bash_profile（通常、Bash設定ファイルの中で宣言)
 export LARAVEL_NO_DISPLAY_OPTIONS="--ansi --no-ansi --version -v -vv -vvv"
 ~~~
+
+#### Environments
+#### 動作環境名
 
 For some long options, this will take more special completion.
 
@@ -173,6 +179,9 @@ As above list showed, default values are "local production testing". If you want
 # Normally, define in .bashrc/.bash_profile（通常、Bash設定ファイルの中で宣言)
 export LARAVEL_ENVIRONMENT_WORDS="development staging onservice"
 ~~~
+
+#### File path
+#### ファイルパス
 
 For a longopt tailed with "path", for instance "--path=", "--super-path=", etc., complete filename from current directory(project root).
 
@@ -202,6 +211,9 @@ $ artisan ide-helper:models --dir=<tab><tab>
 app/         bootstrap/   public/      vendor/
 ~~~
 
+#### Database connection name
+#### データベース接続名
+
 For "--database=" option, off course database connection names will be completed.
 
 "--database="オプションでは、データベース接続名が補完されます。
@@ -215,6 +227,9 @@ mysql   pgsql   sqlite  sqlsrv
 Database connection names will be collected from "database.php" files under project root recursively. So if you use this name without configuring database, may make an error. (Maybe normally, it will be ignore.)
 
 データベース名は、プロジェクトルート下の"database.php"という名前のファイルを再帰的にチェックして収集します。そのため、この名前をデータベースの設定以外で使用していると、エラーが発生する可能性があります。（通常、Bashの補完中のエラーは無視されます。）
+
+#### File name @ anywhere
+#### ファイル名
 
 And anywhere, you can use "//", "./", "../", "~/" for completion of file names.
 
@@ -270,12 +285,6 @@ $ composer.json
 So, you can complete filename freely, anytime, anywhere.
 
 ですから、いつでも、どこでも、自由にファイル名の補完が利用できます。
-
-#### Limitaion（制限）
-
-This completion works in a directory with artisan php file. It means in your Laravel project root directory only. So it don't work like this : 'php /home/MyUsername/MyProject/artisan'
-
-この補完は、artisan phpファイルの存在するディレクトリーが、カレントディレクトリーの場合のみ動作します。つまり、Laravelプロジェクトのルートディレクトリーの中だけで動作します。`php /home/MyUsername/MyProject/artisan`のように、カレントディレクトリー以外のartisanコマンドラインを動作させようとする場合は、働きません。
 
 Sorry for my poor English writing.
 

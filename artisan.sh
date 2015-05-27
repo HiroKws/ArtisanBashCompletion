@@ -182,7 +182,75 @@ op == 1 {
     else
         # Complete Artisan command names.
         # Artisanコマンド名の補完
-        artisan_options=$(php "$artisan" --no-ansi | gawk '/^[[:blank:]]+[\-a-z]+/ { if ($1=="--env") print "--env="; else print $1 }; $2 ~/^-/ { gsub(/\|/, " -", $2); print $2 }')
+        artisan_options=$(php "$artisan" --no-ansi | gawk '
+BEGIN {
+  op = 0
+  usage = 0
+  commands = 0
+}
+/Usage:/ {
+  usage = 1
+  next
+}
+usage == 1 {
+  withEqualIndex = 1
+  for (i=1;NF>=i;i++) {
+    if ($i ~ /\-.*\[=/) {
+      match($i, /([-[:alnum:]]+)/, matched)
+      withEqual[withEqualIndex++] = matched[1]
+    }
+  }
+  usage = 0
+  next
+}
+/Options:/ {
+  op = 1
+  next
+}
+/^$/ {
+  op = 0
+  next
+}
+/Available commands:/ {
+  commands = 1
+  next
+}
+op == 1 {
+  gsub("[(),]", "")
+  gsub(/\[=.+\]/, "=")
+  for (i=1;NF>=i;i++) {
+    if ($i == "-v|vv|vvv" ) {
+      print "-v"
+      print "-vv"
+      print "-vvv"
+      continue
+    }
+    if ($i == "--env") { 
+      print "--env="
+      continue
+    }
+    if ($i ~ /^-/) {
+      tailEqual = 0
+      for(j=1;j<withEqualIndex;j++) {
+        if ($i == withEqual[j]) {
+          tailEqual = 1
+        }
+      }
+      if (tailEqual == 1) {
+        print $i "="
+      }
+      else 
+      {
+        print $i
+      }
+    }
+  }
+  next
+}
+commands ==1 && NF > 1 {
+  print $1;
+}
+        ')
     fi
 
     COMPREPLY=($(compgen -W "${artisan_options}" -- "${cur}"))

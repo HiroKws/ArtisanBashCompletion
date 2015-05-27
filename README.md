@@ -6,6 +6,19 @@ Bash completion code for Laravel Artisan command line tool to complete code. And
 Bash用のLaravel Artisanコマンドラインツールの補完スクリプトです。追加機能として、Laravelプロジェクトディレクトリー下のどのディレクトリー中でも、
 Artisanコマンドを実行できるようにします。
 
+Now for 5.1 LTS.
+5.1LTS対応済みです。
+
+#### Require（動作要件）
+
+This completion needed some linux tools like tr, find, xargs, sort, uniq and php. Especially notice gawk. If this don't work on your environment, check whether gawk is installed. Almost linux distribution installed as 'awk'. But some distribution didn't. Simple check typing 'gawk --help' in your terminal.
+
+And bash complition package also needed.
+
+この補完プログラムは基本的なLinuxツール(tr, find, x, args, sort, uniq, php)を使用しています。特に注意してもらいたのがgawkです。もし動作しない時は、最初にgawkがインストールされているかチェックしてください。ほとんどのディストリビューションでは'awk'としてgawkがインストールされています。しかし、オリジナルのawkしかインストールしていないディストリビューションもあります。端末でgawk --helpと叩きチェックするのが簡単でしょう。
+
+それと、もちろんbash complitionのパッケージも必要です。
+
 #### Install（インストール）
 
 First of all, define alias for artisan command in your .bashrc, like this :

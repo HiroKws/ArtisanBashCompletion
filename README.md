@@ -15,7 +15,7 @@ This completion needed some linux tools like tr, find, xargs, sort, uniq and php
 
 And bash complition package also needed.
 
-この補完プログラムは基本的なLinuxツール(tr, find, x, args, sort, uniq, php)を使用しています。特に注意してもらいたのがgawkです。もし動作しない時は、最初にgawkがインストールされているかチェックしてください。ほとんどのディストリビューションでは'awk'としてgawkがインストールされています。しかし、オリジナルのawkしかインストールしていないディストリビューションもあります。端末でgawk --helpと叩きチェックするのが簡単でしょう。
+この補完プログラムは基本的なLinuxツール(tr, find, xargs, sort, uniq, php)を使用しています。特に注意してもらいたのがgawkです。もし動作しない時は、最初にgawkがインストールされているかチェックしてください。ほとんどのディストリビューションでは'awk'としてgawkがインストールされています。しかし、オリジナルのawkしかインストールしていないディストリビューションもあります。端末でgawk --helpと叩きチェックするのが簡単でしょう。
 
 それと、もちろんbash complitionのパッケージも必要です。
 
